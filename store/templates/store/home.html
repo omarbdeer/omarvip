@@ -1,0 +1,31 @@
+{% extends 'store/base.html' %}
+
+{% block title %}| Catalog{% endblock %}
+
+{% block content %}
+<h1 class="page-title" data-key="categories">Categories</h1>
+
+{% if categories %}
+<div class="grid">
+    {% for category in categories %}
+    <a href="{% url 'category_detail' category.slug %}" class="card">
+        {% with category.products.first as first_product %}
+            {% if first_product and first_product.first_image %}
+                <img src="{{ first_product.first_image.image.url }}" alt="{{ category.name }}" loading="lazy">
+            {% else %}
+                <div class="card-placeholder">🛍️</div>
+            {% endif %}
+        {% endwith %}
+        <div class="card-body">
+            <div class="card-title">{{ category.name }}</div>
+            <div class="card-category">{{ category.products.count }} items</div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<p style="color:#888; text-align:center; padding: 60px 0;" data-key="coming_soon">
+    Products coming soon...
+</p>
+{% endif %}
+{% endblock %}

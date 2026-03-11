@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(source venv/bin/activate && pip freeze | grep -v \"^-e\" > requirements.txt && echo \"Done\" && cat requirements.txt)",
+      "Bash(git init:*)"
+    ]
+  }
+}

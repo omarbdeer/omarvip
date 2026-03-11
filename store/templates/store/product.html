@@ -1,0 +1,33 @@
+{% extends 'store/base.html' %}
+
+{% block title %}| {{ product.name }}{% endblock %}
+
+{% block content %}
+<a href="{% url 'category_detail' product.category.slug %}" class="back-link" data-key="back">← Back</a>
+
+<div class="product-detail">
+    <div class="product-images">
+        {% for img in product.images.all %}
+            <img src="{{ img.image.url }}" alt="{{ product.name }}" loading="lazy">
+        {% empty %}
+            <div class="card-placeholder" style="border-radius:12px; font-size:80px;">🛍️</div>
+        {% endfor %}
+    </div>
+
+    <div class="product-info">
+        <div class="product-name">{{ product.name }}</div>
+        <div style="color:#c9a84c; margin-bottom:10px;">{{ product.category.name }}</div>
+
+        {% if product.description %}
+        <p style="color:#aaa; line-height:1.7; margin-bottom:20px;">{{ product.description }}</p>
+        {% endif %}
+
+        <a href="{{ whatsapp_url }}" target="_blank" class="big-order-btn" data-key="order_now">
+            💬 Order Now
+        </a>
+        <p style="color:#666; font-size:12px; text-align:center; margin-top:10px;" data-key="order_hint">
+            Sends directly to my WhatsApp
+        </p>
+    </div>
+</div>
+{% endblock %}
