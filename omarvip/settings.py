@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',
     'store',
 ]
 
@@ -127,8 +126,6 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 GCS_BUCKET = os.environ.get('GCS_BUCKET', '')
 
 if GCS_BUCKET:
-    DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-    GS_BUCKET_NAME = GCS_BUCKET
     MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET}/'
 else:
     MEDIA_URL = '/media/'
