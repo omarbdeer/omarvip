@@ -126,7 +126,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 GCS_BUCKET = os.environ.get('GCS_BUCKET', '')
 
 if GCS_BUCKET:
-    MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET}/'
+    MEDIA_URL = f'https://storage.googleapis.com/{GCS_BUCKET}/media/'
 else:
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
