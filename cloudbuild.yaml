@@ -10,3 +10,5 @@ steps:
       - --project=omarvip-project
       - --allow-unauthenticated
       - --set-env-vars=SECRET_KEY=omarvip-secret-key-2024,DEBUG=False,ALLOWED_HOSTS=*,GCS_BUCKET=omarvip-media
+options:
+  logging: CLOUD_LOGGING_ONLY
