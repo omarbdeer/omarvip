@@ -4,7 +4,7 @@ from .models import Category, Product
 
 
 def home(request):
-    categories = Category.objects.prefetch_related('products__images').all()
+    categories = Category.objects.all()
     return render(request, 'store/home.html', {'categories': categories})
 
 
