@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    args:
+      - gcloud
+      - run
+      - deploy
+      - omarvip
+      - --source=.
+      - --region=us-central1
+      - --project=omarvip-project
+      - --allow-unauthenticated
+      - --set-env-vars=SECRET_KEY=omarvip-secret-key-2024,DEBUG=False,ALLOWED_HOSTS=*,GCS_BUCKET=omarvip-media
