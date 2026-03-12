@@ -2,12 +2,10 @@ venv/
 __pycache__/
 *.pyc
 *.pyo
-db.sqlite3
 .env
 media/
 staticfiles/
 scrape_log.txt
 scrape_bag.txt
 scrape_jewelry.txt
-*.sqlite3
 .DS_Store
