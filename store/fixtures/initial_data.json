@@ -55557,17 +55557,6 @@
 },
 {
   "model": "store.product",
-  "pk": 10069,
-  "fields": {
-    "category": 64,
-    "name": "LV Wallets - Item 26",
-    "description": "",
-    "yupoo_photo_id": "album_215611137",
-    "created_at": "2026-03-13T14:49:27.972Z"
-  }
-},
-{
-  "model": "store.product",
   "pk": 10070,
   "fields": {
     "category": 64,
@@ -60100,17 +60089,6 @@
 },
 {
   "model": "store.product",
-  "pk": 10482,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 1",
-    "description": "",
-    "yupoo_photo_id": "album_67859394",
-    "created_at": "2026-03-13T15:33:48.375Z"
-  }
-},
-{
-  "model": "store.product",
   "pk": 10483,
   "fields": {
     "category": 70,
@@ -60144,17 +60122,6 @@
 },
 {
   "model": "store.product",
-  "pk": 10486,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 5",
-    "description": "",
-    "yupoo_photo_id": "album_139665018",
-    "created_at": "2026-03-13T15:34:09.590Z"
-  }
-},
-{
-  "model": "store.product",
   "pk": 10487,
   "fields": {
     "category": 70,
@@ -60184,28 +60151,6 @@
     "description": "",
     "yupoo_photo_id": "album_139663329",
     "created_at": "2026-03-13T15:34:22.813Z"
-  }
-},
-{
-  "model": "store.product",
-  "pk": 10490,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 9",
-    "description": "",
-    "yupoo_photo_id": "album_139662772",
-    "created_at": "2026-03-13T15:34:26.917Z"
-  }
-},
-{
-  "model": "store.product",
-  "pk": 10491,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 10",
-    "description": "",
-    "yupoo_photo_id": "album_139662691",
-    "created_at": "2026-03-13T15:34:30.826Z"
   }
 },
 {
@@ -60496,17 +60441,6 @@
 },
 {
   "model": "store.product",
-  "pk": 10518,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 37",
-    "description": "",
-    "yupoo_photo_id": "album_139643832",
-    "created_at": "2026-03-13T15:36:41.356Z"
-  }
-},
-{
-  "model": "store.product",
   "pk": 10519,
   "fields": {
     "category": 70,
@@ -60617,17 +60551,6 @@
 },
 {
   "model": "store.product",
-  "pk": 10529,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 48",
-    "description": "",
-    "yupoo_photo_id": "album_139638430",
-    "created_at": "2026-03-13T15:37:41.521Z"
-  }
-},
-{
-  "model": "store.product",
   "pk": 10530,
   "fields": {
     "category": 70,
@@ -60712,17 +60635,6 @@
     "description": "",
     "yupoo_photo_id": "album_139636608",
     "created_at": "2026-03-13T15:38:24.066Z"
-  }
-},
-{
-  "model": "store.product",
-  "pk": 10538,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 57",
-    "description": "",
-    "yupoo_photo_id": "album_139636561",
-    "created_at": "2026-03-13T15:38:28.272Z"
   }
 },
 {
@@ -60969,17 +60881,6 @@
 },
 {
   "model": "store.product",
-  "pk": 10561,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 81",
-    "description": "",
-    "yupoo_photo_id": "album_139621990",
-    "created_at": "2026-03-13T15:40:43.799Z"
-  }
-},
-{
-  "model": "store.product",
   "pk": 10562,
   "fields": {
     "category": 70,
@@ -61053,17 +60954,6 @@
     "description": "",
     "yupoo_photo_id": "album_139621726",
     "created_at": "2026-03-13T15:41:28.543Z"
-  }
-},
-{
-  "model": "store.product",
-  "pk": 10569,
-  "fields": {
-    "category": 70,
-    "name": "LV Bracelets - Item 89",
-    "description": "",
-    "yupoo_photo_id": "album_90863555",
-    "created_at": "2026-03-13T15:41:33.430Z"
   }
 },
 {
@@ -111569,51 +111459,6 @@
 },
 {
   "model": "store.productimage",
-  "pk": 10569,
-  "fields": {
-    "product": 10069,
-    "image": "products/1a5f688f.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 10570,
-  "fields": {
-    "product": 10069,
-    "image": "products/76e5b6cd.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 10571,
-  "fields": {
-    "product": 10069,
-    "image": "products/06566874.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 10572,
-  "fields": {
-    "product": 10069,
-    "image": "products/a7b6529a.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 10573,
-  "fields": {
-    "product": 10069,
-    "image": "products/e40c7b9f.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
   "pk": 10574,
   "fields": {
     "product": 10070,
@@ -130145,51 +129990,6 @@
 },
 {
   "model": "store.productimage",
-  "pk": 12633,
-  "fields": {
-    "product": 10482,
-    "image": "products/e8dd897b_5PrAVJ7.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12634,
-  "fields": {
-    "product": 10482,
-    "image": "products/e96d6a1f_rBK4jUQ.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12635,
-  "fields": {
-    "product": 10482,
-    "image": "products/63bf04c6_Rl8bs85.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12636,
-  "fields": {
-    "product": 10482,
-    "image": "products/03c81fc8_D8z0hfC.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12637,
-  "fields": {
-    "product": 10482,
-    "image": "products/912d5ca9_ZORzJKT.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
   "pk": 12638,
   "fields": {
     "product": 10483,
@@ -130311,51 +130111,6 @@
   "fields": {
     "product": 10485,
     "image": "products/109efca9_6UHybJZ.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12652,
-  "fields": {
-    "product": 10486,
-    "image": "products/07e92d07_IcgBrk6.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12653,
-  "fields": {
-    "product": 10486,
-    "image": "products/ba37c5f3_EhZ3AQJ.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12654,
-  "fields": {
-    "product": 10486,
-    "image": "products/22a53f9f_7qMMSJz.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12655,
-  "fields": {
-    "product": 10486,
-    "image": "products/cea85c89_YzAdtBB.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12656,
-  "fields": {
-    "product": 10486,
-    "image": "products/973efdcd_Itbk4cD.jpg",
     "order": 4
   }
 },
@@ -130491,87 +130246,6 @@
   "fields": {
     "product": 10489,
     "image": "products/4a22ecb1_HNKe2mR.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12672,
-  "fields": {
-    "product": 10490,
-    "image": "products/3058d719_LEIITnv.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12673,
-  "fields": {
-    "product": 10490,
-    "image": "products/29240d66_7V2ufHA.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12674,
-  "fields": {
-    "product": 10490,
-    "image": "products/13d8b8ff_CcvWeMl.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12675,
-  "fields": {
-    "product": 10490,
-    "image": "products/4f465ad3_NCCxBbD.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12676,
-  "fields": {
-    "product": 10491,
-    "image": "products/9e898642_57jcino.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12677,
-  "fields": {
-    "product": 10491,
-    "image": "products/85ed32e2_rdS6iI7.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12678,
-  "fields": {
-    "product": 10491,
-    "image": "products/1ee55ae7_lVe4TIQ.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12679,
-  "fields": {
-    "product": 10491,
-    "image": "products/b1b8d60e_AOJ3WUm.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12680,
-  "fields": {
-    "product": 10491,
-    "image": "products/153d906a_4ygFrEJ.jpg",
     "order": 4
   }
 },
@@ -131711,51 +131385,6 @@
 },
 {
   "model": "store.productimage",
-  "pk": 12807,
-  "fields": {
-    "product": 10518,
-    "image": "products/5c8c2738_0tn8mRt.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12808,
-  "fields": {
-    "product": 10518,
-    "image": "products/5e748d73_3WtA3MI.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12809,
-  "fields": {
-    "product": 10518,
-    "image": "products/2c071cc3_GU6VOua.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12810,
-  "fields": {
-    "product": 10518,
-    "image": "products/56a48c96_Tv6Sxi6.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12811,
-  "fields": {
-    "product": 10518,
-    "image": "products/3a4cb044_2h9rVfR.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
   "pk": 12812,
   "fields": {
     "product": 10519,
@@ -132206,51 +131835,6 @@
 },
 {
   "model": "store.productimage",
-  "pk": 12862,
-  "fields": {
-    "product": 10529,
-    "image": "products/3b0e3095_obkiEBo.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12863,
-  "fields": {
-    "product": 10529,
-    "image": "products/7c6576f2_YLGVJ7j.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12864,
-  "fields": {
-    "product": 10529,
-    "image": "products/f215e590_fxhS1Le.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12865,
-  "fields": {
-    "product": 10529,
-    "image": "products/7ecc531e_ZDhntVd.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12866,
-  "fields": {
-    "product": 10529,
-    "image": "products/4bbc52ac_W9toM14.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
   "pk": 12867,
   "fields": {
     "product": 10530,
@@ -132606,51 +132190,6 @@
   "fields": {
     "product": 10537,
     "image": "products/d1c43f54_umYpzFu.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12907,
-  "fields": {
-    "product": 10538,
-    "image": "products/8f169bf4_9TRgoHx.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12908,
-  "fields": {
-    "product": 10538,
-    "image": "products/78d9ca35_vbZLuJ3.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12909,
-  "fields": {
-    "product": 10538,
-    "image": "products/f2971ca7_iWt55zd.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12910,
-  "fields": {
-    "product": 10538,
-    "image": "products/04ee152a_ke2nCWZ.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 12911,
-  "fields": {
-    "product": 10538,
-    "image": "products/c10610df_SMOFRNV.jpg",
     "order": 4
   }
 },
@@ -133610,51 +133149,6 @@
 },
 {
   "model": "store.productimage",
-  "pk": 13018,
-  "fields": {
-    "product": 10561,
-    "image": "products/de469acc.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13019,
-  "fields": {
-    "product": 10561,
-    "image": "products/6ea8dc76.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13020,
-  "fields": {
-    "product": 10561,
-    "image": "products/384b639f.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13021,
-  "fields": {
-    "product": 10561,
-    "image": "products/f0a63b0c.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13022,
-  "fields": {
-    "product": 10561,
-    "image": "products/887cd4c9.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
   "pk": 13023,
   "fields": {
     "product": 10562,
@@ -133965,51 +133459,6 @@
   "fields": {
     "product": 10568,
     "image": "products/8324b1db_8fxmiGj.jpg",
-    "order": 4
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13058,
-  "fields": {
-    "product": 10569,
-    "image": "products/58071116.jpg",
-    "order": 0
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13059,
-  "fields": {
-    "product": 10569,
-    "image": "products/4c4fca20.jpg",
-    "order": 1
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13060,
-  "fields": {
-    "product": 10569,
-    "image": "products/3929b1ff.jpg",
-    "order": 2
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13061,
-  "fields": {
-    "product": 10569,
-    "image": "products/4dd62f58.jpg",
-    "order": 3
-  }
-},
-{
-  "model": "store.productimage",
-  "pk": 13062,
-  "fields": {
-    "product": 10569,
-    "image": "products/28a07204.jpg",
     "order": 4
   }
 },
