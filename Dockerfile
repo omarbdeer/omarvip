@@ -15,4 +15,4 @@ RUN python manage.py collectstatic --noinput
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py loaddata store/fixtures/initial_data.json --ignoreconflicts 2>/dev/null || true && gunicorn omarvip.wsgi:application --bind 0.0.0.0:$PORT"]
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py loaddata store/fixtures/initial_data.json && python manage.py loaddata store/fixtures/new_products.json || true && gunicorn omarvip.wsgi:application --bind 0.0.0.0:$PORT"]
