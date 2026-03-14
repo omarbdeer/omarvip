@@ -9,7 +9,7 @@ class ProductImageInline(admin.TabularInline):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'name_ar', 'name_he', 'slug']
+    list_display = ['name', 'name_ar', 'name_he', 'slug', 'image']
     prepopulated_fields = {'slug': ('name',)}
 
 

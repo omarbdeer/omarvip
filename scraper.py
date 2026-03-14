@@ -102,6 +102,26 @@ ALBUMS = [
     {'name': 'Leather Belt', 'category': '690679',  'site': 2},
 ]
 
+import re
+
+def clean_album_title(title, cat_name, index):
+    """Extract a clean product name from a Yupoo album title."""
+    if not title:
+        return f'{cat_name} - Item {index}'
+    # Extract model numbers like M28324, GG123, etc.
+    models = re.findall(r'[A-Z]{1,3}\d{4,}', title)
+    if models:
+        return ' / '.join(models)
+    # Strip Chinese characters and clean up
+    cleaned = re.sub(r'[\u4e00-\u9fff：\-/]+', ' ', title).strip()
+    cleaned = re.sub(r'\s+', ' ', cleaned).strip()
+    # Remove pure numbers at the start (prices)
+    cleaned = re.sub(r'^\d+\s*', '', cleaned).strip()
+    if cleaned:
+        return cleaned
+    return f'{cat_name} - Item {index}'
+
+
 def make_session(site):
     s = requests.Session()
     s.headers.update(site['headers'])
@@ -181,17 +201,17 @@ def scrape_album_page(album_id, site_num, seen_srcs, unique_images):
 
 
 def get_sub_albums(category_id, site_num, max_albums=600):
-    """Fetch sub-album IDs from a category page on site 2."""
+    """Fetch sub-album IDs and titles from a category page on site 2."""
     site = SITE1 if site_num == 1 else SITE2
     base = site['base']
-    album_ids = []
+    albums = []  # list of (id, title)
     seen = set()
     page = 1
 
-    while len(album_ids) < max_albums:
+    while len(albums) < max_albums:
         url = f'{base}/categories/{category_id}?uid=1&page={page}'
         try:
-            time.sleep(0.5)  # faster for metadata — no images
+            time.sleep(0.5)
             resp = sessions[site_num].get(url, timeout=15)
             resp.raise_for_status()
             soup = BeautifulSoup(resp.text, 'html.parser')
@@ -208,10 +228,14 @@ def get_sub_albums(category_id, site_num, max_albums=600):
                 aid = parts[1].split('?')[0].split('/')[0]
                 if aid and aid.isdigit() and aid not in seen:
                     seen.add(aid)
-                    album_ids.append(aid)
+                    # Try to get the album title from link text or title attribute
+                    title = (link.get('title') or link.get_text(separator=' ', strip=True) or '').strip()
+                    # Clean up title — remove extra whitespace and non-text noise
+                    title = ' '.join(title.split())
+                    albums.append((aid, title))
                     found.append(aid)
 
-        print(f'  Category page {page}: {len(found)} sub-albums (total: {len(album_ids)})')
+        print(f'  Category page {page}: {len(found)} sub-albums (total: {len(albums)})')
         if not found:
             break
 
@@ -220,7 +244,76 @@ def get_sub_albums(category_id, site_num, max_albums=600):
             break
         page += 1
 
-    return album_ids
+    return albums
+
+
+def scrape_sub_album_as_product(album_id, product_name, category, site_num):
+    """Scrape all images from a sub-album and save as ONE product with multiple images."""
+    if Product.objects.filter(yupoo_photo_id=f'album_{album_id}').exists():
+        print(f'  Skipping existing: {product_name}')
+        return 0
+
+    site = SITE1 if site_num == 1 else SITE2
+    base = site['base']
+    images = []
+    seen_srcs = set()
+    page = 1
+
+    while True:
+        page_url = f'{base}/albums/{album_id}?uid=1&page={page}'
+        try:
+            soup = get_soup(page_url, site_num)
+        except Exception as e:
+            print(f'  Failed page {page}: {e}')
+            break
+
+        main = soup.find('main') or soup
+        imgs = main.find_all('img', src=lambda s: s and 'photo.yupoo.com' in s)
+        lazy = main.find_all('img', attrs={'data-src': lambda s: s and 'photo.yupoo.com' in s})
+        for img in lazy:
+            img['src'] = img['data-src']
+            imgs.append(img)
+
+        for img in imgs:
+            src = img.get('src', '')
+            parts = src.split('/')
+            base_hash = parts[-2] if len(parts) >= 2 else src
+            if base_hash not in seen_srcs:
+                seen_srcs.add(base_hash)
+                images.append((img, site_num))
+
+        next_page = soup.find('a', string=str(page + 1))
+        if not next_page:
+            break
+        page += 1
+
+    if not images:
+        return 0
+
+    # Reverse order so exterior shots come first, limit to 5 images
+    images = list(reversed(images))[:5]
+
+    product = Product.objects.create(
+        category=category,
+        name=product_name,
+        yupoo_photo_id=f'album_{album_id}',
+    )
+
+    yupoo_user = None
+    for order, (img_tag, sn) in enumerate(images):
+        src = img_tag.get('src', '')
+        parts = src.split('/')
+        photo_hash = parts[-2] if len(parts) >= 2 else f'img_{order}'
+        if len(parts) >= 4:
+            yupoo_user = parts[3]
+        img_url = f'https://photo.yupoo.com/{yupoo_user}/{photo_hash}/medium.jpg' if yupoo_user else src
+        img_data = download_image(img_url, sn)
+        if img_data:
+            product_img = ProductImage(product=product, order=order)
+            product_img.image.save(f'{photo_hash}.jpg', ContentFile(img_data), save=True)
+
+    print(f'  Saved: {product_name} ({len(images)} images)')
+    return 1
 
 
 def save_images(unique_images, category, cat_name, max_items, start_index=0):
@@ -285,20 +378,23 @@ def scrape_album(album, max_items=500):
     unique_images = []
 
     if 'category' in album:
-        # Site 2: category → multiple sub-albums
+        # Site 2: category → multiple sub-albums, each sub-album = 1 product
         print(f'  Fetching sub-albums for category {album["category"]}...')
         sub_albums = get_sub_albums(album['category'], site_num)
         print(f'  Found {len(sub_albums)} sub-albums')
-        for aid in sub_albums:
-            scrape_album_page(aid, site_num, seen_srcs, unique_images)
+        saved = 0
+        for i, (aid, title) in enumerate(sub_albums[:max_items]):
+            product_name = clean_album_title(title, name, i + 1)
+            saved += scrape_sub_album_as_product(aid, product_name, category, site_num)
+        print(f'  Done — saved {saved} products')
+        return saved
     else:
-        # Site 1: direct album
+        # Site 1: direct album — each image is a separate product
         scrape_album_page(album['id'], site_num, seen_srcs, unique_images)
-
-    print(f'  Total unique images: {len(unique_images)}')
-    saved = save_images(unique_images, category, name, max_items)
-    print(f'  Done — saved {saved} items')
-    return saved
+        print(f'  Total unique images: {len(unique_images)}')
+        saved = save_images(unique_images, category, name, max_items)
+        print(f'  Done — saved {saved} items')
+        return saved
 
 
 PERFUME_ALBUMS = [a for a in ALBUMS if 'perfume' in a['name'].lower()]

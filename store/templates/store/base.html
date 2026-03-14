@@ -8,271 +8,352 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            background-color: #0a0a0a;
-            color: #f0f0f0;
-            font-family: 'Segoe UI', Arial, sans-serif;
+        :root {
+            --bg: #0a0a0a;
+            --bg2: #1a1a1a;
+            --bg3: #2a2a2a;
+            --text: #f0f0f0;
+            --text-muted: #aaa;
+            --text-dim: #888;
+            --text-faint: #555;
+            --gold: #c9a84c;
+            --border: #2a2a2a;
+            --border-light: #1a1a1a;
         }
 
-        /* HEADER — always LTR, never flips */
+        html.light {
+            --bg: #f5f5f5;
+            --bg2: #ffffff;
+            --bg3: #e8e8e8;
+            --text: #111111;
+            --text-muted: #444;
+            --text-dim: #666;
+            --text-faint: #999;
+            --gold: #b8922a;
+            --border: #ddd;
+            --border-light: #eee;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* HEADER */
         header {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-            border-bottom: 1px solid #c9a84c;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg2) 100%);
+            border-bottom: 1px solid var(--gold);
             padding: 15px 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             direction: ltr !important;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background 0.3s;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            direction: ltr;
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; direction: ltr; }
+        .logo-text { font-size: 28px; font-weight: 800; letter-spacing: 2px; }
+        .logo-text span:first-child { color: var(--text); }
+        .logo-text span:last-child { color: var(--gold); }
+
+        .logo-text-anim {
+            opacity: 0;
+            transform: translateX(-8px);
+            animation: logoSlideIn 0.5s ease 0.5s forwards;
         }
 
-        .logo-text {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 2px;
+        @keyframes logoSlideIn {
+            to { opacity: 1; transform: translateX(0); }
         }
 
-        .logo-text span:first-child { color: #f0f0f0; }
-        .logo-text span:last-child { color: #c9a84c; }
+        .logo-svg { filter: drop-shadow(0 0 8px rgba(201,168,76,0)); animation: logoGlow 1.5s ease 1s forwards; }
 
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            direction: ltr;
+        @keyframes logoGlow {
+            to { filter: drop-shadow(0 0 8px rgba(201,168,76,0.5)); }
         }
 
-        /* LANGUAGE DROPDOWN */
-        .lang-dropdown {
-            position: relative;
-        }
+        .header-right { display: flex; align-items: center; gap: 12px; direction: ltr; }
+
+        .lang-dropdown { position: relative; }
 
         .lang-dropdown-btn {
-            background: #1a1a1a;
-            border: 1px solid #c9a84c;
-            color: #c9a84c;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: background 0.2s;
-            white-space: nowrap;
+            background: var(--bg2); border: 1px solid var(--gold); color: var(--gold);
+            padding: 8px 16px; border-radius: 20px; cursor: pointer;
+            font-size: 13px; font-weight: 700; display: flex; align-items: center;
+            gap: 6px; transition: background 0.2s; white-space: nowrap;
         }
-
-        .lang-dropdown-btn:hover { background: #2a2a2a; }
+        .lang-dropdown-btn:hover { background: var(--bg3); }
 
         .lang-dropdown-menu {
-            display: none;
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 10px;
-            overflow: hidden;
-            min-width: 130px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-            z-index: 999;
+            display: none; position: absolute; top: calc(100% + 8px); right: 0;
+            background: var(--bg2); border: 1px solid var(--border); border-radius: 10px;
+            overflow: hidden; min-width: 130px; box-shadow: 0 8px 24px rgba(0,0,0,0.4); z-index: 999;
         }
-
         .lang-dropdown-menu.open { display: block; }
 
         .lang-option {
-            padding: 10px 16px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            color: #ccc;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.15s;
-            direction: ltr;
+            padding: 10px 16px; cursor: pointer; font-size: 13px; font-weight: 600;
+            color: var(--text-muted); display: flex; align-items: center; gap: 8px;
+            transition: background 0.15s; direction: ltr;
         }
+        .lang-option:hover { background: var(--bg3); color: var(--text); }
+        .lang-option.active { color: var(--gold); }
 
-        .lang-option:hover { background: #2a2a2a; color: #fff; }
-        .lang-option.active { color: #c9a84c; }
-
-        /* WHATSAPP BUTTON */
         .whatsapp-btn {
-            background: #25D366;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.2s;
-            white-space: nowrap;
+            background: #25D366; color: white; padding: 10px 20px; border-radius: 25px;
+            text-decoration: none; font-weight: bold; font-size: 14px;
+            display: flex; align-items: center; gap: 8px; transition: background 0.2s; white-space: nowrap;
         }
-
         .whatsapp-btn:hover { background: #1ebe5d; }
 
-        /* MAIN — direction controlled by JS */
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
+        /* CART BUTTON */
+        .cart-btn {
+            position: relative; background: var(--bg2); border: 1px solid var(--gold);
+            color: var(--gold); width: 42px; height: 42px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: background 0.2s;
+        }
+        .cart-btn:hover { background: var(--bg3); }
+
+        .cart-badge {
+            position: absolute; top: -4px; right: -4px; background: var(--gold);
+            color: #0a0a0a; font-size: 10px; font-weight: 800; width: 18px; height: 18px;
+            border-radius: 50%; display: none; align-items: center; justify-content: center;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
+        /* THEME TOGGLE */
+        .theme-btn {
+            background: var(--bg2); border: 1px solid var(--border); color: var(--text-muted);
+            width: 42px; height: 42px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; transition: background 0.2s, border-color 0.2s;
         }
+        .theme-btn:hover { background: var(--bg3); border-color: var(--gold); }
 
-        @media (max-width: 400px) {
-            .grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
+        /* SCROLL TO TOP */
+        .scroll-top {
+            position: fixed; bottom: 28px; right: 24px; width: 44px; height: 44px;
+            background: var(--gold); color: #0a0a0a; border: none; border-radius: 50%;
+            font-size: 20px; cursor: pointer; display: none; align-items: center;
+            justify-content: center; z-index: 300; box-shadow: 0 4px 16px rgba(201,168,76,0.4);
+            transition: opacity 0.3s, transform 0.2s;
         }
+        .scroll-top.visible { display: flex; }
+        .scroll-top:hover { transform: translateY(-3px); }
+
+        /* CART PANEL */
+        .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; display: none; }
+        .cart-overlay.open { display: block; }
+
+        .cart-panel {
+            position: fixed; top: 0; right: -420px; width: 100%; max-width: 420px;
+            height: 100%; background: var(--bg2); border-left: 1px solid var(--border);
+            z-index: 201; display: flex; flex-direction: column; transition: right 0.3s ease;
+        }
+        .cart-panel.open { right: 0; }
+
+        .cart-header {
+            padding: 20px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .cart-header h2 { font-size: 18px; color: var(--gold); }
+        .cart-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+
+        .cart-items { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+
+        .cart-item {
+            display: flex; gap: 12px; align-items: center;
+            background: var(--bg3); border-radius: 10px; padding: 10px;
+        }
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+        .cart-item-cat { font-size: 11px; color: var(--text-dim); }
+        .cart-item-remove { background: none; border: none; color: var(--text-faint); font-size: 18px; cursor: pointer; padding: 4px; }
+        .cart-item-remove:hover { color: #e74c3c; }
+
+        .cart-footer { padding: 16px; border-top: 1px solid var(--border); }
+
+        .cart-empty { text-align: center; color: var(--text-faint); padding: 40px 0; font-size: 14px; }
+
+        .cart-whatsapp-btn {
+            display: block; background: #25D366; color: white; padding: 16px;
+            border-radius: 12px; text-decoration: none; font-weight: 700;
+            font-size: 15px; text-align: center; transition: background 0.2s;
+        }
+        .cart-whatsapp-btn:hover { background: #1ebe5d; }
+
+        .cart-clear {
+            display: block; text-align: center; color: var(--text-faint); font-size: 12px;
+            margin-top: 10px; cursor: pointer; background: none; border: none; width: 100%;
+        }
+        .cart-clear:hover { color: #e74c3c; }
+
+        /* ADD TO CART BUTTON */
+        .add-to-cart-btn {
+            width: 100%; background: var(--bg2); border: 1px solid var(--gold); color: var(--gold);
+            padding: 8px; border-radius: 0 0 12px 12px; font-size: 12px; font-weight: 700;
+            cursor: pointer; transition: background 0.2s; letter-spacing: 0.5px;
+        }
+        .add-to-cart-btn:hover { background: var(--gold); color: #0a0a0a; }
+        .add-to-cart-btn.added { background: var(--gold); color: #0a0a0a; }
+
+        /* MAIN */
+        main { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+        @media (max-width: 400px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
         .card {
-            background: #1a1a1a;
-            border: 1px solid #2a2a2a;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.2s, border-color 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
+            background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
+            overflow: hidden; transition: transform 0.2s, border-color 0.2s;
+            text-decoration: none; color: inherit; display: block;
         }
+        .card:hover { transform: translateY(-4px); border-color: var(--gold); }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: #c9a84c;
-        }
+        .card-img-wrap { position: relative; width: 100%; aspect-ratio: 1; background: var(--bg2); overflow: hidden; }
 
-        .card img {
-            width: 100%;
-            aspect-ratio: 1;
-            object-fit: cover;
-        }
+        .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .card-placeholder {
-            width: 100%;
-            aspect-ratio: 1;
-            background: #2a2a2a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
+        /* SKELETON */
+        .skeleton {
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
         }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        .card-placeholder { width: 100%; aspect-ratio: 1; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 48px; }
 
         .card-body { padding: 12px; }
+        .card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+        .card-category { font-size: 12px; color: var(--text-dim); }
 
-        .card-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #f0f0f0;
-            margin-bottom: 4px;
-        }
+        .page-title { font-size: 24px; font-weight: 700; color: var(--gold); margin-bottom: 25px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
 
-        .page-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #c9a84c;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #2a2a2a;
-        }
-
-        .product-detail {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .product-images img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-
+        .product-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .product-images img { width: 100%; border-radius: 12px; margin-bottom: 10px; }
         .product-info { padding: 20px 0; }
-
-        .product-name {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
+        .product-name { font-size: 26px; font-weight: 700; margin-bottom: 15px; }
 
         .big-order-btn {
-            display: block;
-            background: #25D366;
-            color: white;
-            padding: 16px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            text-align: center;
-            margin-top: 25px;
-            transition: background 0.2s;
+            display: block; background: #25D366; color: white; padding: 16px 30px;
+            border-radius: 30px; text-decoration: none; font-weight: 700; font-size: 16px;
+            text-align: center; margin-top: 25px; transition: background 0.2s;
         }
-
         .big-order-btn:hover { background: #1ebe5d; }
 
-        .back-link {
-            display: inline-block;
-            color: #c9a84c;
-            text-decoration: none;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-
+        .back-link { display: inline-block; color: var(--gold); text-decoration: none; margin-bottom: 20px; font-size: 14px; }
         .back-link:hover { text-decoration: underline; }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #555;
-            font-size: 12px;
-            border-top: 1px solid #1a1a1a;
-            margin-top: 50px;
-        }
+        footer { text-align: center; padding: 20px; color: var(--text-faint); font-size: 12px; border-top: 1px solid var(--border-light); margin-top: 50px; }
 
         @media (max-width: 600px) {
             .product-detail { grid-template-columns: 1fr; }
             .logo-text { font-size: 22px; }
             header { padding: 12px 16px; }
         }
+
+        /* VIP LANDING */
+        #vipIntro {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #060606;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease;
+        }
+        #vipCanvas {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+        }
+        .vip-center {
+            position: relative; z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            gap: 0; text-align: center; padding: 20px;
+        }
+        .vip-logo-wrap {
+            margin-bottom: 28px;
+            filter: drop-shadow(0 0 30px rgba(201,168,76,0.5));
+            animation: vipLogoPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+        }
+        @keyframes vipLogoPop {
+            from { opacity: 0; transform: scale(0.5); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .vip-brand {
+            font-size: 52px; font-weight: 900; letter-spacing: 6px;
+            line-height: 1; margin-bottom: 14px;
+            opacity: 0; animation: vipFadeUp 0.7s ease 1s both;
+        }
+        .vip-omar { color: #f0f0f0; }
+        .vip-vip  { color: #c9a84c; }
+        .vip-tagline {
+            font-size: 14px; letter-spacing: 3px; text-transform: uppercase;
+            color: #888; margin-bottom: 32px;
+            opacity: 0; animation: vipFadeUp 0.7s ease 1.3s both;
+        }
+        .vip-divider {
+            width: 60px; height: 1px; background: #c9a84c;
+            margin-bottom: 32px;
+            opacity: 0; animation: vipFadeUp 0.5s ease 1.5s both;
+        }
+        .vip-enter-btn {
+            background: transparent; border: 1px solid #c9a84c;
+            color: #c9a84c; padding: 14px 40px; border-radius: 40px;
+            font-size: 15px; font-weight: 700; letter-spacing: 2px;
+            cursor: pointer; transition: background 0.3s, color 0.3s, transform 0.2s;
+            text-transform: uppercase;
+            opacity: 0; animation: vipFadeUp 0.7s ease 1.7s both;
+        }
+        .vip-enter-btn:hover {
+            background: #c9a84c; color: #060606; transform: scale(1.05);
+        }
+        @keyframes vipFadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
     <header>
         <a href="/" class="logo">
-            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" class="logo-svg">
+                <!-- Background circle -->
                 <circle cx="22.5" cy="22.5" r="22.5" fill="#c9a84c"/>
-                <text x="22.5" y="29" text-anchor="middle" fill="#0a0a0a" font-size="18" font-weight="800" font-family="Arial">O</text>
+                <!-- Animated ring that draws itself -->
+                <circle cx="22.5" cy="22.5" r="20" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"
+                    stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-linecap="round"
+                    transform="rotate(-90 22.5 22.5)">
+                    <animate attributeName="stroke-dashoffset" from="125.6" to="0" dur="1s" begin="0s" fill="freeze" calcMode="ease"/>
+                </circle>
+                <!-- Shimmer overlay -->
+                <circle cx="22.5" cy="22.5" r="22.5" fill="url(#shimmer)" opacity="0">
+                    <animate attributeName="opacity" values="0;0.6;0" dur="1.2s" begin="0.8s" fill="freeze"/>
+                </circle>
+                <!-- O letter fades in -->
+                <text x="22.5" y="29" text-anchor="middle" fill="#0a0a0a" font-size="18" font-weight="800" font-family="Arial" opacity="0">
+                    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.6s" fill="freeze"/>
+                    O
+                </text>
+                <defs>
+                    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="white" stop-opacity="0"/>
+                        <stop offset="50%" stop-color="white" stop-opacity="1"/>
+                        <stop offset="100%" stop-color="white" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
             </svg>
-            <div class="logo-text">
-                <span>Omar</span><span>VIP</span>
-            </div>
+            <div class="logo-text logo-text-anim"><span>Omar</span><span>VIP</span></div>
         </a>
 
         <div class="header-right">
-            <!-- Language Dropdown -->
             <div class="lang-dropdown" id="langDropdown">
                 <button class="lang-dropdown-btn" onclick="toggleDropdown()">
-                    <span id="currentLangLabel">🌐 EN</span>
-                    <span>▾</span>
+                    <span id="currentLangLabel">🌐 EN</span><span>▾</span>
                 </button>
                 <div class="lang-dropdown-menu" id="langMenu">
                     <div class="lang-option" onclick="setLang('en')">🇬🇧 English</div>
@@ -281,11 +362,67 @@
                 </div>
             </div>
 
+            <button class="theme-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+
+            <button class="cart-btn" onclick="openCart()" id="cartBtn">
+                🛒<span class="cart-badge" id="cartBadge">0</span>
+            </button>
+
             <a href="https://wa.me/972502544777" target="_blank" class="whatsapp-btn">
                 💬 <span id="waLabel">WhatsApp</span>
             </a>
         </div>
     </header>
+
+    <button class="scroll-top" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+    <!-- VIP LANDING INTRO -->
+    <div id="vipIntro" style="display:none;">
+        <canvas id="vipCanvas"></canvas>
+        <div class="vip-center">
+            <div class="vip-logo-wrap">
+                <svg width="100" height="100" viewBox="0 0 45 45" fill="none" class="vip-logo-svg">
+                    <circle cx="22.5" cy="22.5" r="22.5" fill="#c9a84c"/>
+                    <circle cx="22.5" cy="22.5" r="20" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"
+                        stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-linecap="round"
+                        transform="rotate(-90 22.5 22.5)">
+                        <animate attributeName="stroke-dashoffset" from="125.6" to="0" dur="1.2s" begin="0.3s" fill="freeze" calcMode="ease"/>
+                    </circle>
+                    <circle cx="22.5" cy="22.5" r="22.5" fill="url(#vipShimmer)" opacity="0">
+                        <animate attributeName="opacity" values="0;0.7;0" dur="1.2s" begin="1.2s" fill="freeze"/>
+                    </circle>
+                    <text x="22.5" y="29" text-anchor="middle" fill="#0a0a0a" font-size="18" font-weight="800" font-family="Arial" opacity="0">
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.9s" fill="freeze"/>
+                        O
+                    </text>
+                    <defs>
+                        <linearGradient id="vipShimmer" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="white" stop-opacity="0"/>
+                            <stop offset="50%" stop-color="white" stop-opacity="1"/>
+                            <stop offset="100%" stop-color="white" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="vip-brand">
+                <span class="vip-omar">Omar</span><span class="vip-vip">VIP</span>
+            </div>
+            <div class="vip-tagline">Exclusive Luxury. Curated for You.</div>
+            <div class="vip-divider"></div>
+            <button class="vip-enter-btn" onclick="enterSite()">Enter Collection ›</button>
+        </div>
+    </div>
+
+    <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h2 id="cartTitle">🛒 My Cart</h2>
+            <button class="cart-close" onclick="closeCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter"></div>
+    </div>
 
     <main id="main-content">
         {% block content %}{% endblock %}
@@ -296,98 +433,247 @@
     </footer>
 
     <script>
+        const WHATSAPP = '972502544777';
+
         const translations = {
-            en: {
-                label: "🌐 EN",
-                dir: "ltr",
-                lang: "en",
-                categories: "Categories",
-                back: "← Back",
-                order_now: "💬 Order Now",
-                order_hint: "Sends directly to my WhatsApp",
-                coming_soon: "Products coming soon...",
-                no_products: "No products in this category yet",
-                wa: "WhatsApp",
-                rights: "All rights reserved"
-            },
-            he: {
-                label: "🌐 עב",
-                dir: "rtl",
-                lang: "he",
-                categories: "קטגוריות",
-                back: "חזרה →",
-                order_now: "💬 הזמן עכשיו",
-                order_hint: "ישלח ל-WhatsApp שלי ישירות",
-                coming_soon: "המוצרים יתווספו בקרוב...",
-                no_products: "אין מוצרים בקטגוריה זו עדיין",
-                wa: "וואטסאפ",
-                rights: "כל הזכויות שמורות"
-            },
-            ar: {
-                label: "🌐 ع",
-                dir: "rtl",
-                lang: "ar",
-                categories: "الفئات",
-                back: "رجوع →",
-                order_now: "💬 اطلب الآن",
-                order_hint: "سيتم الإرسال مباشرة على واتساب",
-                coming_soon: "المنتجات قادمة قريباً...",
-                no_products: "لا توجد منتجات في هذه الفئة بعد",
-                wa: "واتساب",
-                rights: "جميع الحقوق محفوظة"
-            }
+            en: { label:"🌐 EN", dir:"ltr", lang:"en", categories:"Categories", back:"← Back", order_now:"💬 Order Now", order_hint:"Sends directly to my WhatsApp", coming_soon:"Products coming soon...", no_products:"No products in this category yet", wa:"WhatsApp", rights:"All rights reserved", cart_title:"🛒 My Cart", add_to_cart:"+ Add to Cart", added:"✓ Added", send_cart:"💬 Send Order via WhatsApp", clear_cart:"Clear cart", cart_empty:"Your cart is empty" },
+            he: { label:"🌐 עב", dir:"rtl", lang:"he", categories:"קטגוריות", back:"חזרה →", order_now:"💬 הזמן עכשיו", order_hint:"ישלח ל-WhatsApp שלי ישירות", coming_soon:"המוצרים יתווספו בקרוב...", no_products:"אין מוצרים בקטגוריה זו עדיין", wa:"וואטסאפ", rights:"כל הזכויות שמורות", cart_title:"🛒 סל הקניות", add_to_cart:"+ הוסף לסל", added:"✓ נוסף", send_cart:"💬 שלח הזמנה בוואטסאפ", clear_cart:"נקה סל", cart_empty:"הסל שלך ריק" },
+            ar: { label:"🌐 ع", dir:"rtl", lang:"ar", categories:"الفئات", back:"رجوع →", order_now:"💬 اطلب الآن", order_hint:"سيتم الإرسال مباشرة على واتساب", coming_soon:"المنتجات قادمة قريباً...", no_products:"لا توجد منتجات في هذه الفئة بعد", wa:"واتساب", rights:"جميع الحقوق محفوظة", cart_title:"🛒 سلة التسوق", add_to_cart:"+ أضف للسلة", added:"✓ تمت الإضافة", send_cart:"💬 أرسل الطلب عبر واتساب", clear_cart:"إفراغ السلة", cart_empty:"سلتك فارغة" }
         };
 
-        function toggleDropdown() {
-            document.getElementById('langMenu').classList.toggle('open');
+        function esc(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
         }
 
-        // Close dropdown when clicking outside
+        // --- Lang ---
+        function toggleDropdown() { document.getElementById('langMenu').classList.toggle('open'); }
         document.addEventListener('click', function(e) {
-            if (!document.getElementById('langDropdown').contains(e.target)) {
+            if (!document.getElementById('langDropdown').contains(e.target))
                 document.getElementById('langMenu').classList.remove('open');
-            }
         });
-
-        function setLang(lang) {
-            localStorage.setItem('lang', lang);
-            applyLang(lang);
-            document.getElementById('langMenu').classList.remove('open');
-        }
+        function setLang(lang) { localStorage.setItem('lang', lang); applyLang(lang); document.getElementById('langMenu').classList.remove('open'); }
 
         function applyLang(lang) {
             const t = translations[lang];
-
-            // Update HTML lang attribute only (no dir on html — header stays fixed)
             document.getElementById('html-root').setAttribute('lang', t.lang);
-
-            // Only main content changes direction, NOT the header
             document.getElementById('main-content').setAttribute('dir', t.dir);
             document.querySelector('footer').setAttribute('dir', t.dir);
-
-            // Update dropdown label
             document.getElementById('currentLangLabel').textContent = t.label;
-
-            // Update static labels
             document.getElementById('waLabel').textContent = t.wa;
             document.getElementById('footer-rights').textContent = t.rights;
-
-            // Update active option
             document.querySelectorAll('.lang-option').forEach(el => el.classList.remove('active'));
             const opts = document.querySelectorAll('.lang-option');
-            const map = { en: 0, he: 1, ar: 2 };
+            const map = { en:0, he:1, ar:2 };
             if (opts[map[lang]]) opts[map[lang]].classList.add('active');
-
-            // Update all data-key elements
             document.querySelectorAll('[data-key]').forEach(el => {
                 const key = el.getAttribute('data-key');
                 if (t[key]) el.textContent = t[key];
             });
+            document.getElementById('cartTitle').textContent = t.cart_title;
+            document.querySelectorAll('.add-to-cart-btn:not(.added)').forEach(btn => btn.textContent = t.add_to_cart);
+            renderCart();
         }
 
-        // Apply on load
         const savedLang = localStorage.getItem('lang') || 'en';
         applyLang(savedLang);
+
+        // --- Cart ---
+        function getCart() { return JSON.parse(localStorage.getItem('omarvip_cart') || '[]'); }
+        function saveCart(cart) { localStorage.setItem('omarvip_cart', JSON.stringify(cart)); updateBadge(); }
+
+        function updateBadge() {
+            const cart = getCart();
+            const badge = document.getElementById('cartBadge');
+            badge.textContent = cart.length;
+            badge.style.display = cart.length > 0 ? 'flex' : 'none';
+        }
+
+        function addToCart(id, name, category, imgUrl, btn) {
+            const cart = getCart();
+            if (!cart.find(i => i.id === id)) {
+                cart.push({ id, name, category, imgUrl });
+                saveCart(cart);
+            }
+            const t = translations[localStorage.getItem('lang') || 'en'];
+            btn.textContent = t.added;
+            btn.classList.add('added');
+        }
+
+        function removeFromCart(id) {
+            saveCart(getCart().filter(i => i.id !== id));
+            renderCart();
+            // Reset button on the page if visible
+            const t = translations[localStorage.getItem('lang') || 'en'];
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                if (btn.dataset.id === id) {
+                    btn.textContent = t.add_to_cart;
+                    btn.classList.remove('added');
+                }
+            });
+        }
+
+        function openCart() { renderCart(); document.getElementById('cartPanel').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
+        function closeCart() { document.getElementById('cartPanel').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); }
+
+        function renderCart() {
+            const cart = getCart();
+            const t = translations[localStorage.getItem('lang') || 'en'];
+            const itemsEl = document.getElementById('cartItems');
+            const footerEl = document.getElementById('cartFooter');
+
+            if (cart.length === 0) {
+                itemsEl.textContent = '';
+                const empty = document.createElement('div');
+                empty.className = 'cart-empty';
+                empty.textContent = t.cart_empty;
+                itemsEl.appendChild(empty);
+                footerEl.textContent = '';
+                return;
+            }
+
+            itemsEl.textContent = '';
+            cart.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+
+                const img = document.createElement('img');
+                img.src = item.imgUrl;
+                img.alt = '';
+                img.onerror = () => img.style.display = 'none';
+
+                const info = document.createElement('div');
+                info.className = 'cart-item-info';
+
+                const name = document.createElement('div');
+                name.className = 'cart-item-name';
+                name.textContent = item.name;
+
+                const cat = document.createElement('div');
+                cat.className = 'cart-item-cat';
+                cat.textContent = item.category;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'cart-item-remove';
+                removeBtn.textContent = '✕';
+                removeBtn.onclick = () => removeFromCart(item.id);
+
+                info.appendChild(name);
+                info.appendChild(cat);
+                div.appendChild(img);
+                div.appendChild(info);
+                div.appendChild(removeBtn);
+                itemsEl.appendChild(div);
+            });
+
+            const msg = encodeURIComponent(
+                'Hi Omar, I want to order:\n' +
+                cart.map((item, i) => `${i+1}. ${item.name} (${item.category})`).join('\n')
+            );
+
+            footerEl.textContent = '';
+
+            const waBtn = document.createElement('a');
+            waBtn.href = `https://wa.me/${WHATSAPP}?text=${msg}`;
+            waBtn.target = '_blank';
+            waBtn.className = 'cart-whatsapp-btn';
+            waBtn.textContent = `${t.send_cart} (${cart.length})`;
+
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'cart-clear';
+            clearBtn.textContent = t.clear_cart;
+            clearBtn.onclick = clearCart;
+
+            footerEl.appendChild(waBtn);
+            footerEl.appendChild(clearBtn);
+        }
+
+        function clearCart() {
+            saveCart([]);
+            renderCart();
+            const t = translations[localStorage.getItem('lang') || 'en'];
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.textContent = t.add_to_cart;
+                btn.classList.remove('added');
+            });
+        }
+
+        updateBadge();
+
+        // --- Dark/Light mode ---
+        function toggleTheme() {
+            const isLight = document.getElementById('html-root').classList.toggle('light');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
+        }
+        (function() {
+            const saved = localStorage.getItem('theme') || 'dark';
+            if (saved === 'light') {
+                document.getElementById('html-root').classList.add('light');
+                document.getElementById('themeBtn').textContent = '☀️';
+            }
+        })();
+
+        // --- Scroll to top ---
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', function() {
+            scrollBtn.classList.toggle('visible', window.scrollY > 300);
+        }, { passive: true });
+
+        // --- VIP Landing ---
+        (function() {
+            if (sessionStorage.getItem('vip_entered')) return;
+            const intro = document.getElementById('vipIntro');
+            intro.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            // Particle canvas
+            const canvas = document.getElementById('vipCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+
+            function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+            resize();
+            window.addEventListener('resize', resize);
+
+            for (let i = 0; i < 60; i++) {
+                particles.push({
+                    x: Math.random() * innerWidth,
+                    y: Math.random() * innerHeight,
+                    r: Math.random() * 1.5 + 0.3,
+                    speed: Math.random() * 0.4 + 0.1,
+                    opacity: Math.random() * 0.5 + 0.1,
+                    drift: (Math.random() - 0.5) * 0.3
+                });
+            }
+
+            let animFrame;
+            function drawParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(201,168,76,${p.opacity})`;
+                    ctx.fill();
+                    p.y -= p.speed;
+                    p.x += p.drift;
+                    if (p.y < -5) { p.y = canvas.height + 5; p.x = Math.random() * canvas.width; }
+                });
+                animFrame = requestAnimationFrame(drawParticles);
+            }
+            drawParticles();
+
+            window.enterSite = function() {
+                cancelAnimationFrame(animFrame);
+                intro.style.opacity = '0';
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    document.body.style.overflow = '';
+                    sessionStorage.setItem('vip_entered', '1');
+                }, 800);
+            };
+        })();
     </script>
 </body>
 </html>

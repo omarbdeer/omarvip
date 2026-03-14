@@ -7,6 +7,7 @@ class Category(models.Model):
     name_he = models.CharField(max_length=200, blank=True)
     slug = models.SlugField(unique=True)
     yupoo_album_id = models.CharField(max_length=100, blank=True)
+    image = models.ImageField(upload_to='categories/', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = 'Categories'

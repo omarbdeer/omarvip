@@ -5,13 +5,133 @@
 {% block content %}
 <a href="{% url 'category_detail' product.category.slug %}" class="back-link" data-key="back">← Back</a>
 
+<style>
+    .carousel {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 16px;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #111;
+        aspect-ratio: 1;
+    }
+
+    .carousel-track {
+        display: flex;
+        height: 100%;
+        transition: transform 0.35s ease;
+    }
+
+    .carousel-track img {
+        min-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        border: none;
+        color: #fff;
+        font-size: 22px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        transition: background 0.2s;
+    }
+
+    .carousel-btn:hover { background: rgba(201,168,76,0.8); }
+    .carousel-btn.prev { left: 10px; }
+    .carousel-btn.next { right: 10px; }
+
+    .carousel-dots {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .carousel-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #333;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .carousel-dot.active { background: #c9a84c; }
+
+    .thumbs {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        scrollbar-width: none;
+    }
+
+    .thumbs::-webkit-scrollbar { display: none; }
+
+    .thumb {
+        min-width: 60px;
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        object-fit: cover;
+        cursor: pointer;
+        opacity: 0.5;
+        border: 2px solid transparent;
+        transition: opacity 0.2s, border-color 0.2s;
+    }
+
+    .thumb.active {
+        opacity: 1;
+        border-color: #c9a84c;
+    }
+</style>
+
 <div class="product-detail">
     <div class="product-images">
-        {% for img in product.images.all %}
-            <img src="{{ img.image.url }}" alt="{{ product.name }}" loading="lazy">
-        {% empty %}
-            <div class="card-placeholder" style="border-radius:12px; font-size:80px;">🛍️</div>
-        {% endfor %}
+        {% with images=product.images.all %}
+        {% if images %}
+
+        <div class="carousel" id="carousel">
+            <div class="carousel-track" id="carouselTrack">
+                {% for img in images %}
+                <img src="{{ img.image.url }}" alt="{{ product.name }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+                {% endfor %}
+            </div>
+            {% if images|length > 1 %}
+            <button class="carousel-btn prev" onclick="slide(-1)">‹</button>
+            <button class="carousel-btn next" onclick="slide(1)">›</button>
+            {% endif %}
+        </div>
+
+        {% if images|length > 1 %}
+        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="thumbs" id="thumbs">
+            {% for img in images %}
+            <img src="{{ img.image.url }}" class="thumb {% if forloop.first %}active{% endif %}" onclick="goTo({{ forloop.counter0 }})" loading="lazy">
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% else %}
+        <div class="card-placeholder" style="border-radius:12px; font-size:80px; aspect-ratio:1;">🛍️</div>
+        {% endif %}
+        {% endwith %}
     </div>
 
     <div class="product-info">
@@ -22,6 +142,13 @@
         <p style="color:#aaa; line-height:1.7; margin-bottom:20px;">{{ product.description }}</p>
         {% endif %}
 
+        <button class="add-to-cart-btn" style="border-radius:12px; padding:14px; font-size:14px; margin-bottom:12px;"
+            data-id="{{ product.pk }}"
+            data-name="{{ product.name|escapejs }}"
+            data-category="{{ product.category.name|escapejs }}"
+            data-img="{% with img=product.images.first %}{% if img %}{{ img.image.url }}{% endif %}{% endwith %}"
+            data-key="add_to_cart">+ Add to Cart</button>
+
         <a href="{{ whatsapp_url }}" target="_blank" class="big-order-btn" data-key="order_now">
             💬 Order Now
         </a>
@@ -30,4 +157,60 @@
         </p>
     </div>
 </div>
+
+<script>
+    let current = 0;
+    const track = document.getElementById('carouselTrack');
+    const total = track ? track.children.length : 0;
+    const dotsContainer = document.getElementById('carouselDots');
+    const thumbs = document.querySelectorAll('.thumb');
+
+    // Build dots
+    if (dotsContainer) {
+        for (let i = 0; i < total; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+            dot.onclick = () => goTo(i);
+            dotsContainer.appendChild(dot);
+        }
+    }
+
+    function goTo(index) {
+        current = (index + total) % total;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        // Update dots
+        document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+        // Update thumbs
+        thumbs.forEach((t, i) => t.classList.toggle('active', i === current));
+        // Scroll thumb into view
+        if (thumbs[current]) thumbs[current].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    function slide(dir) { goTo(current + dir); }
+
+    // Add to cart button
+    const cartBtn = document.querySelector('.add-to-cart-btn');
+    if (cartBtn) {
+        cartBtn.addEventListener('click', function() {
+            addToCart(this.dataset.id, this.dataset.name, this.dataset.category, this.dataset.img, this);
+        });
+        const cart = JSON.parse(localStorage.getItem('omarvip_cart') || '[]');
+        const t = translations[localStorage.getItem('lang') || 'en'];
+        if (cart.find(i => i.id === cartBtn.dataset.id)) {
+            cartBtn.textContent = t.added;
+            cartBtn.classList.add('added');
+        }
+    }
+
+    // Swipe support for mobile
+    let startX = 0;
+    const carousel = document.getElementById('carousel');
+    if (carousel) {
+        carousel.addEventListener('touchstart', e => startX = e.touches[0].clientX, { passive: true });
+        carousel.addEventListener('touchend', e => {
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) slide(diff > 0 ? 1 : -1);
+        });
+    }
+</script>
 {% endblock %}

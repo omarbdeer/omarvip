@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.conf import settings
+from django.core.paginator import Paginator
 from .models import Category, Product
 
 
@@ -10,10 +11,13 @@ def home(request):
 
 def category_detail(request, slug):
     category = get_object_or_404(Category, slug=slug)
-    products = category.products.prefetch_related('images').all()
+    all_products = category.products.prefetch_related('images').all()
+    paginator = Paginator(all_products, 10)
+    page = paginator.get_page(request.GET.get('page'))
     return render(request, 'store/category.html', {
         'category': category,
-        'products': products,
+        'products': page,
+        'page_obj': page,
         'whatsapp': settings.WHATSAPP_NUMBER,
     })
 

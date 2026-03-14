@@ -9,18 +9,30 @@
 {% if products %}
 <div class="grid">
     {% for product in products %}
-    <a href="{% url 'product_detail' product.pk %}" class="card">
-        {% with product.first_image as img %}
-        {% if img %}
-            <img src="{{ img.image.url }}" alt="{{ product.name }}" loading="lazy">
-        {% else %}
-            <div class="card-placeholder">🛍️</div>
-        {% endif %}
-        {% endwith %}
-        <div class="card-body">
-            <div class="card-title">{{ product.name }}</div>
-        </div>
-    </a>
+    {% with img=product.first_image %}
+    <div class="card-wrap">
+        <a href="{% url 'product_detail' product.pk %}" class="card">
+            <div class="card-img-wrap">
+                {% if img %}
+                <div class="skeleton" id="sk-{{ product.pk }}"></div>
+                <img src="{{ img.image.url }}" alt="{{ product.name }}" loading="lazy"
+                     onload="document.getElementById('sk-{{ product.pk }}').style.display='none'">
+                {% else %}
+                <div class="card-placeholder">🛍️</div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="card-title">{{ product.name }}</div>
+            </div>
+        </a>
+        <button class="add-to-cart-btn"
+            data-id="{{ product.pk }}"
+            data-name="{{ product.name|escapejs }}"
+            data-category="{{ category.name|escapejs }}"
+            data-img="{% if img %}{{ img.image.url }}{% endif %}"
+            data-key="add_to_cart">+ Add to Cart</button>
+    </div>
+    {% endwith %}
     {% endfor %}
 </div>
 {% else %}
@@ -28,4 +40,77 @@
     No products in this category yet
 </p>
 {% endif %}
+
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}" class="page-btn">‹</a>
+    {% else %}
+    <span class="page-btn disabled">‹</span>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+        <span class="page-btn active">{{ num }}</span>
+        {% elif num >= page_obj.number|add:"-2" and num <= page_obj.number|add:"2" %}
+        <a href="?page={{ num }}" class="page-btn">{{ num }}</a>
+        {% elif num == 1 or num == page_obj.paginator.num_pages %}
+        <a href="?page={{ num }}" class="page-btn">{{ num }}</a>
+        {% elif num == page_obj.number|add:"-3" or num == page_obj.number|add:"3" %}
+        <span class="page-btn dots">…</span>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="page-btn">›</a>
+    {% else %}
+    <span class="page-btn disabled">›</span>
+    {% endif %}
+</div>
+{% endif %}
+
+<style>
+.card-wrap { display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: border-color 0.2s; }
+.card-wrap:hover { border-color: var(--gold); }
+.card-wrap .card { border: none; border-radius: 0; }
+.card-wrap .card:hover { transform: none; }
+
+.pagination {
+    display: flex; justify-content: center; align-items: center;
+    gap: 6px; margin-top: 36px; flex-wrap: wrap;
+}
+.page-btn {
+    min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; font-size: 14px; font-weight: 600; text-decoration: none;
+    border: 1px solid var(--border); color: var(--text-muted);
+    background: var(--bg2); transition: all 0.2s; cursor: pointer; padding: 0 6px;
+}
+.page-btn:hover:not(.active):not(.disabled):not(.dots) {
+    border-color: var(--gold); color: var(--gold);
+}
+.page-btn.active { background: var(--gold); color: #0a0a0a; border-color: var(--gold); font-weight: 800; }
+.page-btn.disabled { opacity: 0.3; cursor: default; }
+.page-btn.dots { border: none; background: none; cursor: default; }
+</style>
+
+<script>
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        addToCart(this.dataset.id, this.dataset.name, this.dataset.category, this.dataset.img, this);
+    });
+});
+
+// Mark already-in-cart items
+(function() {
+    const cart = JSON.parse(localStorage.getItem('omarvip_cart') || '[]');
+    const ids = new Set(cart.map(i => i.id));
+    const t = translations[localStorage.getItem('lang') || 'en'];
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        if (ids.has(btn.dataset.id)) {
+            btn.textContent = t.added;
+            btn.classList.add('added');
+        }
+    });
+})();
+</script>
 {% endblock %}
