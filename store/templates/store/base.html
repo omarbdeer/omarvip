@@ -207,7 +207,7 @@
         main { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        @media (max-width: 400px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        @media (max-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
         .card {
             background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
@@ -258,6 +258,11 @@
             .product-detail { grid-template-columns: 1fr; }
             .logo-text { font-size: 22px; }
             header { padding: 12px 16px; }
+            .whatsapp-btn span { display: none; }
+            .whatsapp-btn { padding: 10px 12px; }
+            .header-right { gap: 8px; }
+            main { padding: 20px 12px; }
+            .page-title { font-size: 20px; margin-bottom: 16px; }
         }
 
         /* VIP LANDING */
