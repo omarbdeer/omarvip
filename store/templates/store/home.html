@@ -1,33 +1,25 @@
 {% extends 'store/base.html' %}
 
-{% block title %}| Catalog{% endblock %}
+{% block title %}| Brands{% endblock %}
 
 {% block content %}
-<h1 class="page-title" data-key="categories">Categories</h1>
+<h1 class="page-title" data-key="brands">Brands</h1>
 
-{% if categories %}
+{% if companies %}
 <div class="cat-banner-grid">
-    {% for category in categories %}
-    <a href="{% url 'category_detail' category.slug %}" class="cat-banner-card">
+    {% for company in companies %}
+    <a href="{% url 'company_detail' company.slug %}" class="cat-banner-card">
         <div class="cat-banner-img">
-            {% if category.image %}
-                <div class="skeleton" id="sk-cat-{{ category.pk }}"></div>
-                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy"
-                     onload="document.getElementById('sk-cat-{{ category.pk }}').style.display='none'">
+            {% if company.logo %}
+                <div class="skeleton" id="sk-co-{{ company.pk }}"></div>
+                <img src="{{ company.logo.url }}" alt="{{ company.name }}" loading="lazy"
+                     onload="document.getElementById('sk-co-{{ company.pk }}').style.display='none'">
             {% else %}
-                {% with category.products.first as first_product %}
-                {% if first_product and first_product.first_image %}
-                    <div class="skeleton" id="sk-cat-{{ category.pk }}"></div>
-                    <img src="{{ first_product.first_image.image.url }}" alt="{{ category.name }}" loading="lazy"
-                         onload="document.getElementById('sk-cat-{{ category.pk }}').style.display='none'">
-                {% else %}
-                    <div class="card-placeholder" style="aspect-ratio:16/9; font-size:64px;">🛍️</div>
-                {% endif %}
-                {% endwith %}
+                <div class="card-placeholder" style="aspect-ratio:16/9; font-size:64px;">🌸</div>
             {% endif %}
             <div class="cat-banner-overlay">
-                <div class="cat-banner-name">{{ category.name }}</div>
-                <div class="cat-banner-count">{{ category.products.count }} items</div>
+                <div class="cat-banner-name">{{ company.name }}</div>
+                <div class="cat-banner-count">{{ company.perfumes.count }} perfumes</div>
             </div>
         </div>
     </a>
@@ -35,7 +27,7 @@
 </div>
 {% else %}
 <p style="color:var(--text-dim); text-align:center; padding: 60px 0;" data-key="coming_soon">
-    Products coming soon...
+    Brands coming soon...
 </p>
 {% endif %}
 
@@ -82,7 +74,7 @@
 .cat-banner-overlay {
     position: absolute;
     bottom: 0; left: 0; right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 100%);
     padding: 24px 16px 14px;
 }
 .cat-banner-name {

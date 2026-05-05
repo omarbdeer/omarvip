@@ -9,7 +9,7 @@ steps:
       - --region=us-central1
       - --project=omarvip-project
       - --allow-unauthenticated
-      - --set-env-vars=SECRET_KEY=omarvip-secret-key-2024,DEBUG=False,ALLOWED_HOSTS=*,GCS_BUCKET=omarvip-media
+      - --set-env-vars=SECRET_KEY=omarvip-secret-key-2024,DEBUG=False,ALLOWED_HOSTS=*,GCS_BUCKET=omarvip-media,ALKHAIR_URL=https://alkhair-qyogdm3awq-uc.a.run.app,DATABASE_URL=postgresql://neondb_owner:npg_fGN7uj5xZWUE@ep-aged-term-amkwwwxc-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       - --timeout=300
       - --cpu=2
       - --memory=1Gi

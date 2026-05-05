@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OmarVIP {% block title %}{% endblock %}</title>
+    <title>The Perfume Legend {% block title %}{% endblock %}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -57,7 +57,7 @@
         }
 
         .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; direction: ltr; }
-        .logo-text { font-size: 28px; font-weight: 800; letter-spacing: 2px; }
+        .logo-text { font-size: 20px; font-weight: 800; letter-spacing: 1.5px; line-height: 1; }
         .logo-text span:first-child { color: var(--text); }
         .logo-text span:last-child { color: var(--gold); }
 
@@ -256,7 +256,7 @@
 
         @media (max-width: 600px) {
             .product-detail { grid-template-columns: 1fr; }
-            .logo-text { font-size: 22px; }
+            .logo-text { font-size: 15px; letter-spacing: 1px; }
             header { padding: 12px 16px; }
             .whatsapp-btn span { display: none; }
             .whatsapp-btn { padding: 10px 12px; }
@@ -290,10 +290,11 @@
             to   { opacity: 1; transform: scale(1); }
         }
         .vip-brand {
-            font-size: 52px; font-weight: 900; letter-spacing: 6px;
-            line-height: 1; margin-bottom: 14px;
+            font-size: 40px; font-weight: 900; letter-spacing: 4px;
+            line-height: 1.1; margin-bottom: 14px; text-align: center;
             opacity: 0; animation: vipFadeUp 0.7s ease 1s both;
         }
+        @media (max-width: 600px) { .vip-brand { font-size: 28px; letter-spacing: 2px; } }
         .vip-omar { color: #f0f0f0; }
         .vip-vip  { color: #c9a84c; }
         .vip-tagline {
@@ -326,33 +327,9 @@
 <body>
     <header>
         <a href="/" class="logo">
-            <svg width="45" height="45" viewBox="0 0 45 45" fill="none" class="logo-svg">
-                <!-- Background circle -->
-                <circle cx="22.5" cy="22.5" r="22.5" fill="#c9a84c"/>
-                <!-- Animated ring that draws itself -->
-                <circle cx="22.5" cy="22.5" r="20" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"
-                    stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-linecap="round"
-                    transform="rotate(-90 22.5 22.5)">
-                    <animate attributeName="stroke-dashoffset" from="125.6" to="0" dur="1s" begin="0s" fill="freeze" calcMode="ease"/>
-                </circle>
-                <!-- Shimmer overlay -->
-                <circle cx="22.5" cy="22.5" r="22.5" fill="url(#shimmer)" opacity="0">
-                    <animate attributeName="opacity" values="0;0.6;0" dur="1.2s" begin="0.8s" fill="freeze"/>
-                </circle>
-                <!-- O letter fades in -->
-                <text x="22.5" y="29" text-anchor="middle" fill="#0a0a0a" font-size="18" font-weight="800" font-family="Arial" opacity="0">
-                    <animate attributeName="opacity" from="0" to="1" dur="0.4s" begin="0.6s" fill="freeze"/>
-                    O
-                </text>
-                <defs>
-                    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="white" stop-opacity="0"/>
-                        <stop offset="50%" stop-color="white" stop-opacity="1"/>
-                        <stop offset="100%" stop-color="white" stop-opacity="0"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-            <div class="logo-text logo-text-anim"><span>Omar</span><span>VIP</span></div>
+            <img src="{% static 'img/perfume-legend-logo.jpeg' %}" alt="The Perfume Legend"
+                 class="logo-svg" style="width:45px;height:45px;border-radius:50%;object-fit:cover;border:1px solid var(--gold);">
+            <div class="logo-text logo-text-anim"><span>The Perfume</span> <span>Legend</span></div>
         </a>
 
         <div class="header-right">
@@ -386,33 +363,13 @@
         <canvas id="vipCanvas"></canvas>
         <div class="vip-center">
             <div class="vip-logo-wrap">
-                <svg width="100" height="100" viewBox="0 0 45 45" fill="none" class="vip-logo-svg">
-                    <circle cx="22.5" cy="22.5" r="22.5" fill="#c9a84c"/>
-                    <circle cx="22.5" cy="22.5" r="20" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"
-                        stroke-dasharray="125.6" stroke-dashoffset="125.6" stroke-linecap="round"
-                        transform="rotate(-90 22.5 22.5)">
-                        <animate attributeName="stroke-dashoffset" from="125.6" to="0" dur="1.2s" begin="0.3s" fill="freeze" calcMode="ease"/>
-                    </circle>
-                    <circle cx="22.5" cy="22.5" r="22.5" fill="url(#vipShimmer)" opacity="0">
-                        <animate attributeName="opacity" values="0;0.7;0" dur="1.2s" begin="1.2s" fill="freeze"/>
-                    </circle>
-                    <text x="22.5" y="29" text-anchor="middle" fill="#0a0a0a" font-size="18" font-weight="800" font-family="Arial" opacity="0">
-                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.9s" fill="freeze"/>
-                        O
-                    </text>
-                    <defs>
-                        <linearGradient id="vipShimmer" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="white" stop-opacity="0"/>
-                            <stop offset="50%" stop-color="white" stop-opacity="1"/>
-                            <stop offset="100%" stop-color="white" stop-opacity="0"/>
-                        </linearGradient>
-                    </defs>
-                </svg>
+                <img src="{% static 'img/perfume-legend-logo.jpeg' %}" alt="The Perfume Legend"
+                     style="width:160px;height:160px;border-radius:50%;object-fit:cover;border:2px solid #c9a84c;box-shadow:0 0 40px rgba(201,168,76,0.4);">
             </div>
             <div class="vip-brand">
-                <span class="vip-omar">Omar</span><span class="vip-vip">VIP</span>
+                <span class="vip-omar">The Perfume</span> <span class="vip-vip">Legend</span>
             </div>
-            <div class="vip-tagline">Exclusive Luxury. Curated for You.</div>
+            <div class="vip-tagline">French &amp; Italian Luxury Perfumes</div>
             <div class="vip-divider"></div>
             <button class="vip-enter-btn" onclick="enterSite()">Enter Collection ›</button>
         </div>
@@ -434,16 +391,16 @@
     </main>
 
     <footer>
-        OmarVIP &copy; 2025 &mdash; <span id="footer-rights">All rights reserved</span>
+        The Perfume Legend &copy; 2026 &mdash; <span id="footer-rights">All rights reserved</span>
     </footer>
 
     <script>
         const WHATSAPP = '972502544777';
 
         const translations = {
-            en: { label:"🌐 EN", dir:"ltr", lang:"en", categories:"Categories", back:"← Back", order_now:"💬 Order Now", order_hint:"Sends directly to my WhatsApp", coming_soon:"Products coming soon...", no_products:"No products in this category yet", wa:"WhatsApp", rights:"All rights reserved", cart_title:"🛒 My Cart", add_to_cart:"+ Add to Cart", added:"✓ Added", send_cart:"💬 Send Order via WhatsApp", clear_cart:"Clear cart", cart_empty:"Your cart is empty" },
-            he: { label:"🌐 עב", dir:"rtl", lang:"he", categories:"קטגוריות", back:"חזרה →", order_now:"💬 הזמן עכשיו", order_hint:"ישלח ל-WhatsApp שלי ישירות", coming_soon:"המוצרים יתווספו בקרוב...", no_products:"אין מוצרים בקטגוריה זו עדיין", wa:"וואטסאפ", rights:"כל הזכויות שמורות", cart_title:"🛒 סל הקניות", add_to_cart:"+ הוסף לסל", added:"✓ נוסף", send_cart:"💬 שלח הזמנה בוואטסאפ", clear_cart:"נקה סל", cart_empty:"הסל שלך ריק" },
-            ar: { label:"🌐 ع", dir:"rtl", lang:"ar", categories:"الفئات", back:"رجوع →", order_now:"💬 اطلب الآن", order_hint:"سيتم الإرسال مباشرة على واتساب", coming_soon:"المنتجات قادمة قريباً...", no_products:"لا توجد منتجات في هذه الفئة بعد", wa:"واتساب", rights:"جميع الحقوق محفوظة", cart_title:"🛒 سلة التسوق", add_to_cart:"+ أضف للسلة", added:"✓ تمت الإضافة", send_cart:"💬 أرسل الطلب عبر واتساب", clear_cart:"إفراغ السلة", cart_empty:"سلتك فارغة" }
+            en: { label:"🌐 EN", dir:"ltr", lang:"en", brands:"Brands", back:"← Back", order_now:"💬 Order Now", order_hint:"Sends directly via WhatsApp", coming_soon:"Brands coming soon...", no_perfumes:"No perfumes for this brand yet", ask_price:"Ask for price", wa:"WhatsApp", rights:"All rights reserved", cart_title:"🛒 My Cart", add_to_cart:"+ Add to Cart", added:"✓ Added", send_cart:"💬 Send Order via WhatsApp", clear_cart:"Clear cart", cart_empty:"Your cart is empty" },
+            he: { label:"🌐 עב", dir:"rtl", lang:"he", brands:"מותגים", back:"חזרה →", order_now:"💬 הזמן עכשיו", order_hint:"ישלח דרך WhatsApp ישירות", coming_soon:"מותגים יתווספו בקרוב...", no_perfumes:"אין בשמים למותג זה עדיין", ask_price:"לבירור מחיר", wa:"וואטסאפ", rights:"כל הזכויות שמורות", cart_title:"🛒 סל הקניות", add_to_cart:"+ הוסף לסל", added:"✓ נוסף", send_cart:"💬 שלח הזמנה בוואטסאפ", clear_cart:"נקה סל", cart_empty:"הסל שלך ריק" },
+            ar: { label:"🌐 ع", dir:"rtl", lang:"ar", brands:"العلامات", back:"رجوع →", order_now:"💬 اطلب الآن", order_hint:"سيتم الإرسال مباشرة على واتساب", coming_soon:"العلامات قادمة قريباً...", no_perfumes:"لا توجد عطور لهذه العلامة بعد", ask_price:"اطلب السعر", wa:"واتساب", rights:"جميع الحقوق محفوظة", cart_title:"🛒 سلة التسوق", add_to_cart:"+ أضف للسلة", added:"✓ تمت الإضافة", send_cart:"💬 أرسل الطلب عبر واتساب", clear_cart:"إفراغ السلة", cart_empty:"سلتك فارغة" }
         };
 
         function esc(str) {

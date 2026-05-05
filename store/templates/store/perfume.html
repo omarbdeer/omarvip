@@ -1,0 +1,110 @@
+{% extends 'store/base.html' %}
+
+{% block title %}| {{ perfume.name }}{% endblock %}
+
+{% block content %}
+<a href="{% url 'company_detail' perfume.company.slug %}" class="back-link" data-key="back">← Back</a>
+
+<style>
+    .perfume-hero {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto 16px;
+        border-radius: 14px;
+        overflow: hidden;
+        background: var(--bg2);
+        aspect-ratio: 1;
+    }
+    .perfume-hero img {
+        width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+
+    .size-list { display: flex; flex-direction: column; gap: 8px; margin: 18px 0 22px; }
+    .size-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px;
+        background: var(--bg2);
+    }
+    .size-label { font-weight: 700; color: var(--text); font-size: 15px; }
+    .size-price { color: var(--gold); font-weight: 700; font-size: 15px; }
+    .size-price.muted { color: var(--text-faint); font-weight: 500; font-size: 13px; }
+
+    .gender-pill {
+        display: inline-block; padding: 4px 12px; border-radius: 999px;
+        background: var(--bg3); color: var(--gold);
+        font-size: 12px; font-weight: 700; letter-spacing: 1px;
+        text-transform: uppercase; margin-bottom: 12px;
+    }
+</style>
+
+<div class="product-detail">
+    <div class="product-images">
+        {% if perfume.image %}
+        <div class="perfume-hero">
+            <img src="{{ perfume.image.url }}" alt="{{ perfume.name }}">
+        </div>
+        {% else %}
+        <div class="card-placeholder" style="border-radius:12px; font-size:80px; aspect-ratio:1;">🌸</div>
+        {% endif %}
+    </div>
+
+    <div class="product-info">
+        <div class="product-name">{{ perfume.name }}</div>
+        <div style="color:var(--gold); margin-bottom:10px;">
+            <a href="{% url 'company_detail' perfume.company.slug %}" style="color:var(--gold); text-decoration:none;">{{ perfume.company.name }}</a>
+        </div>
+        <div class="gender-pill">{{ perfume.get_gender_display }}</div>
+
+        {% if perfume.description %}
+        <p style="color:var(--text-muted); line-height:1.7; margin-bottom:20px;">{{ perfume.description }}</p>
+        {% endif %}
+
+        {% with sizes=perfume.sizes.all %}
+        {% if sizes %}
+        <div class="size-list">
+            {% for s in sizes %}
+            <div class="size-row">
+                <span class="size-label">{{ s.size_ml }} ml</span>
+                {% if s.price is not None %}
+                <span class="size-price">{{ s.price }}</span>
+                {% else %}
+                <span class="size-price muted" data-key="ask_price">Ask for price</span>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <button class="add-to-cart-btn" style="border-radius:12px; padding:14px; font-size:14px; margin-bottom:12px;"
+            data-id="{{ perfume.pk }}"
+            data-name="{{ perfume.name|escapejs }}"
+            data-category="{{ perfume.company.name|escapejs }}"
+            data-img="{% if perfume.image %}{{ perfume.image.url }}{% endif %}"
+            data-key="add_to_cart">+ Add to Cart</button>
+
+        <a href="{{ whatsapp_url }}" target="_blank" class="big-order-btn" data-key="order_now">
+            💬 Order Now
+        </a>
+        <p style="color:var(--text-faint); font-size:12px; text-align:center; margin-top:10px;" data-key="order_hint">
+            Sends directly via WhatsApp
+        </p>
+    </div>
+</div>
+
+<script>
+    const cartBtn = document.querySelector('.add-to-cart-btn');
+    if (cartBtn) {
+        cartBtn.addEventListener('click', function() {
+            addToCart(this.dataset.id, this.dataset.name, this.dataset.category, this.dataset.img, this);
+        });
+        const cart = JSON.parse(localStorage.getItem('omarvip_cart') || '[]');
+        const t = translations[localStorage.getItem('lang') || 'en'];
+        if (cart.find(i => i.id === cartBtn.dataset.id)) {
+            cartBtn.textContent = t.added;
+            cartBtn.classList.add('added');
+        }
+    }
+</script>
+{% endblock %}

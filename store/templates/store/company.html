@@ -1,0 +1,78 @@
+{% extends 'store/base.html' %}
+
+{% block title %}| {{ company.name }}{% endblock %}
+
+{% block content %}
+<a href="/" class="back-link" data-key="back">← Back</a>
+<h1 class="page-title">{{ company.name }}</h1>
+
+{% if company.description %}
+<p style="color:var(--text-muted); margin-bottom: 24px; line-height:1.6;">{{ company.description }}</p>
+{% endif %}
+
+{% if perfumes %}
+<div class="grid">
+    {% for perfume in perfumes %}
+    <div class="card-wrap">
+        <a href="{% url 'perfume_detail' perfume.pk %}" class="card">
+            <div class="card-img-wrap">
+                {% if perfume.image %}
+                <div class="skeleton" id="sk-{{ perfume.pk }}"></div>
+                <img src="{{ perfume.image.url }}" alt="{{ perfume.name }}" loading="lazy"
+                     onload="document.getElementById('sk-{{ perfume.pk }}').style.display='none'">
+                {% else %}
+                <div class="card-placeholder">🌸</div>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <div class="card-title">{{ perfume.name }}</div>
+                <div class="card-category">
+                    {{ perfume.get_gender_display }}
+                    {% with sizes=perfume.sizes.all %}
+                        {% if sizes %} · {% for s in sizes %}{{ s.size_ml }}ml{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </a>
+        <button class="add-to-cart-btn"
+            data-id="{{ perfume.pk }}"
+            data-name="{{ perfume.name|escapejs }}"
+            data-category="{{ company.name|escapejs }}"
+            data-img="{% if perfume.image %}{{ perfume.image.url }}{% endif %}"
+            data-key="add_to_cart">+ Add to Cart</button>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p style="color:#888; text-align:center; padding: 60px 0;" data-key="no_perfumes">
+    No perfumes for this brand yet
+</p>
+{% endif %}
+
+<style>
+.card-wrap { display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: border-color 0.2s; }
+.card-wrap:hover { border-color: var(--gold); }
+.card-wrap .card { border: none; border-radius: 0; }
+.card-wrap .card:hover { transform: none; }
+</style>
+
+<script>
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        addToCart(this.dataset.id, this.dataset.name, this.dataset.category, this.dataset.img, this);
+    });
+});
+
+(function() {
+    const cart = JSON.parse(localStorage.getItem('omarvip_cart') || '[]');
+    const ids = new Set(cart.map(i => i.id));
+    const t = translations[localStorage.getItem('lang') || 'en'];
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        if (ids.has(btn.dataset.id)) {
+            btn.textContent = t.added;
+            btn.classList.add('added');
+        }
+    });
+})();
+</script>
+{% endblock %}
